@@ -13,18 +13,22 @@ from config import version
 warnings.filterwarnings("ignore")
 
 def date_start():
+    """ Начало работы бота """
     date_start.__annotations__["time_start"] = datetime.datetime.now()
 
-@in_chat()    
+
+@in_chat()
 def ping(m):
     bot.delete_message(m.chat.id, m.message_id)
 
     try:
         keyboard = types.InlineKeyboardMarkup()
-        keyboard_delete = types.InlineKeyboardButton(text = "❌", callback_data = "delete")
+        keyboard_delete = types.InlineKeyboardButton(text="❌",
+                                                     callback_data="delete")
         keyboard.add(keyboard_delete)
-        
-        work_bot = datetime.datetime.now() - date_start.__annotations__["time_start"]
+        now = datetime.datetime.now()
+        work_bot = now - date_start.__annotations__["time_start"]
+
         seconds = work_bot.seconds
 
         if seconds > 60:
@@ -46,13 +50,14 @@ def ping(m):
         mem = psutil.virtual_memory().percent
 
         bot.send_message(m.chat.id,
-                        text = f"*PONG*🏓\n\n_Время работы бота_:"
-                        f"*{round (float(time), 2)}* *{what_time}*"
-                        f"\n_Версия бота_: *{version}* \n\n_Информация сервера_:"
-                        f"\n_CPU_: *{cpu}%*\n_MEM_: *{mem}%*",
+                         text=f"*PONG*🏓\n\n_Время работы бота_: "
+                         f"*{round (float(time), 2)}* *{what_time}*"
+                         f"\n_Версия бота_: *{version}*" 
+                         "\n\n_Информация сервера_:"
+                         f"\n_CPU_: *{cpu}%*\n_MEM_: *{mem}%*",
 
-                        parse_mode = "Markdown",
-                        reply_markup = keyboard)
+                         parse_mode="Markdown",
+                         reply_markup=keyboard)
 
     except Exception as e:
-        print (e)
+        print(e)

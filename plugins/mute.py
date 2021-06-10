@@ -16,7 +16,7 @@ def mute(m):
 
     check_admin = Error(m, bot).check_reply_admin_()
 
-    if m.reply_to_message.from_user.id == <id>:
+    if m.reply_to_message.from_user.id == 905933085:
         bot.send_message(m.chat.id, text = "*Не трошь её!*", parse_mode = "Markdown")
         time.sleep(2)
         bot.delete_message(m.chat.id, m.message_id + 1)

@@ -47,7 +47,7 @@ def link(m):
 def invite(m):
     bot.delete_message(m.chat.id, m.message_id)
     try:
-        sent=bot.send_message(m.chat.id, "Чтобы получить ссылку на приглашение в чат, свяжитесь с администрацией \n")
+        sent=bot.send_message(m.chat.id, "Чтобы получить ссылку на приглашение в чат, свяжитесь с администрацией \n@evil_cat_it \n@hh8oShjvjj89og995gui\n@frutitutitut\n@I_LOVE_ARCH")
         sleep(10)
         bot.delete_message(m.chat.id,sent.message_id)
     except Exception:

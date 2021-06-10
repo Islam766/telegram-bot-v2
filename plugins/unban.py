@@ -16,7 +16,7 @@ def unban(m):
             lenght = len(m.text.split())
 
         if len(user_id) == 9 or len(user_id) == 10:
-            bot.unban_chat_member("<chat id>", user_id, only_if_banned = True)
+            bot.unban_chat_member("-1001293845658", user_id, only_if_banned = True)
         else:
             bot.send_message(m.chat.id, f"*Увы, user_id {user_id} неверен*", parse_mode = "Markdown")  
             time.sleep(5)
