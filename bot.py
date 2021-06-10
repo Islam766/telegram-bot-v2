@@ -1,5 +1,6 @@
 #!/usr/bin/python
-##
+# -*- coding: utf8 -*-
+
 try:
     from config import bot
     from plugins.callback import callback_inline

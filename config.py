@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 """ Файл для хранения конфигурации, паролей и т.д """
 
 import telebot
