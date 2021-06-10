@@ -1,5 +1,5 @@
-import telebot  #pip install pyTelegramBotAPI
-import requests  #pip install requests
+import telebot   # pip install pyTelegramBotAPI
+import requests   # pip install requests
 import psycopg2
 import heroku3
 
