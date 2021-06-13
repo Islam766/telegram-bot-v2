@@ -525,75 +525,126 @@ def callback_inline(call):
                                   parse_mode="Markdown")
         elif call.data == "lfs linux":
             markup = types.InlineKeyboardMarkup()
-            downloads = types.InlineKeyboardButton(text='Загрузить', url='linuxfromscratch.org')
-            wiki = types.InlineKeyboardButton(text='Russian book', url='book.linuxfromscratch.ru')
+            downloads = types.InlineKeyboardButton(text='Загрузить',
+                                                   url='linuxfromscratch.org')
+            wiki = types.InlineKeyboardButton(text='Russian book',
+                                              url='book.linuxfromscratch.ru')
             back = types.InlineKeyboardButton(text="🔙", callback_data="infa")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
             markup.add(downloads, wiki)
             markup.add(back, delete)
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text="*[LFS Linux]   Тут даже нечего сказать*", reply_markup = markup, parse_mode= "Markdown")
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id,
+                                  text="*[LFS Linux]  "
+                                  "Тут даже нечего сказать*",
+                                  reply_markup=markup,
+                                  parse_mode="Markdown")
+
         elif call.data == "kali linux":
             markup = types.InlineKeyboardMarkup()
-            btn_site= types.InlineKeyboardButton(text='Взломать', url='https://clck.ru/JwL3')
+            btn_site = types.InlineKeyboardButton(text='Взломать',
+                                                  url='https://clck.ru/JwL3')
             back = types.InlineKeyboardButton(text="🔙", callback_data="infa")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
             markup.add(btn_site)
             markup.add(back, delete)
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text="*[Kall Linux]   Наше время пришло, мой друг*", reply_markup = markup, parse_mode= "Markdown")
-    #________________________________________________________________________________________________________________
-    #Кнопки для команды /help
-    #________________________________________________________________________________________________________________
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id,
+                                  text="*[Kall Linux]   Наше время пришло,"
+                                  " мой друг*",
+                                  reply_markup=markup,
+                                  parse_mode="Markdown")
+    #  __________________________________________________________________________
+    #  Кнопки для команды /help
+    #  __________________________________________________________________________
         elif call.data == "helpmenu":
-            keyboard = types.InlineKeyboardMarkup() #Добавляем кнопки
-            commands_user = types.InlineKeyboardButton(text="Пользователь🤵", callback_data="user")
-            commands_admin = types.InlineKeyboardButton(text="Админ🤴", callback_data="admins")
-            back = types.InlineKeyboardButton(text="🔙", callback_data="glav")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
-            keyboard.add(commands_user, commands_admin) #Добавляем кнопки для вывода
+            keyboard = types.InlineKeyboardMarkup()  # Добавляем кнопки
+            commands_user = types.InlineKeyboardButton("Пользователь🤵",
+                                                       callback_data="user")
+
+            commands_admin = types.InlineKeyboardButton("Админ🤴",
+                                                        callback_data="admins")
+            back = types.InlineKeyboardButton(text="🔙",
+                                              callback_data="glav")
+
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
+
+            keyboard.add(commands_user, commands_admin)
+            # Добавляем кнопки для вывода
             keyboard.add(back, delete)
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
-                                  text="*Кто ты?*", reply_markup=keyboard, parse_mode= "Markdown") #Выводим кнопки и сообщение
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id,
+                                  text="*Кто ты?*",
+                                  reply_markup=keyboard,
+                                  parse_mode="Markdown")
+            #  Выводим кнопки и сообщение
         elif call.data == "user":
             markup = types.InlineKeyboardMarkup()
-            back=types.InlineKeyboardButton(text="🔙", callback_data="helpmenu")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
-            markup.add(back, delete) ###
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+            back = types.InlineKeyboardButton(text="🔙",
+                                              callback_data="helpmenu")
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
+            markup.add(back, delete)
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id,
                                   text="📎*Команды для пользователя*📎"
-                                    "\n`/start` - _запустить бота_"
-                                    "\n`/id` - _Узнать свой Telegram ID_"
-                                    "\n`/github` - _Репозиторий кота_"
-                                    "\n`/say` *text* - _крик из толпы_"
-                                    "\n`/invite` - _Получить пригласительную ссылку_"
-                                    "\n`/cats` - _Получить рандомных котеек_"
-                                    "\n`/encode` *text* - _Закодировать в base64_"
-                                    "\n`/ping` - _Проверить работоспособность бота_"
-                                    "\n`/decode` *text* - _Декодировать base64_"
-                                    "\n`/url` *Ссылка на сайт* - _Скриншот сайта_"
-                                    "\n`/wiki` *text* - _Поиск информации в вики_"
-                                    "\n`/ru` *text* - _Перевести на русский_"
-                                    "\n`/en` *text* - _Перевести на английский_"
-                                    "\n`/post` *text* - _Запостить шутку на канал_"
-                                    "\n`/game` - _Игра камень, ножницы, бумага_"
-                                    "\n`/crocodile` - _Игра-крокодил_"
-                                    "\n`/roll` - _Сыграть в рулетку_"
-                                    "\n`/search` *text* - _Поиск в гугле_"
-                                    "\n`/sy` *text* - _Поиск в ютубе_"
-                                    "\n`/proxy` - _Получить свежий список прокси_"
-                                    "\n`/top` - _Показать активных пользователей_"
-                                    "\n`/arch_news` - _Показать новости Арча_"
-                                    "\n`/news` - _Новости_"
-                                    "\n`/whois` *IP* - _Узнать информацию об IP_"
-                                    "\n`/kernel` - _Показать последние версии ядер_", reply_markup=markup, parse_mode= "Markdown") #Выводим кнопки и сообщение parse_mode= "Markdown"
+                                       "\n`/start` - _запустить бота_"
+                                       "\n`/id` - _Узнать свой Telegram ID_"
+                                       "\n`/github` - _Репозиторий кота_"
+                                       "\n`/say` *text* - _крик из толпы_"
+                                       "\n`/invite` - _Получить "
+                                       "пригласительную ссылку_"
+                                       "\n`/cats` - _Получить рандомных "
+                                       "котеек_"
+                                       "\n`/encode` *text* - _Закодировать "
+                                       "в base64_"
+                                       "\n`/ping` - _Проверить работоспособн"
+                                       "ость бота_"
+                                       "\n`/decode` *text* - _Декодировать"
+                                       " base64_"
+                                       "\n`/url` *Ссылка на сайт* - "
+                                       "_Скриншот сайта_"
+                                       "\n`/wiki` *text* - _Поиск информации"
+                                       " в вики_"
+                                       "\n`/ru` *text* - _Перевести на "
+                                       "русский_"
+                                       "\n`/en` *text* - _Перевести на "
+                                       "английский_"
+                                       "\n`/post` *text* - _Запостить "
+                                       "шутку на канал_"
+                                       "\n`/game` - _Игра камень, ножницы, "
+                                       "бумага_"
+                                       "\n`/crocodile` - _Игра-крокодил_"
+                                       "\n`/roll` - _Сыграть в рулетку_"
+                                       "\n`/search` *text* - _Поиск в гугле_"
+                                       "\n`/sy` *text* - _Поиск в ютубе_"
+                                       "\n`/proxy` - _Получить свежий "
+                                       "список прокси_"
+                                       "\n`/top` - _Показать активных "
+                                       "пользователей_"
+                                       "\n`/arch_news` - _Показать новости "
+                                       "Арча_"
+                                       "\n`/news` - _Новости_"
+                                       "\n`/whois` *IP* - _Узнать информацию "
+                                       "об IP_"
+                                       "\n`/kernel` - _Показать последние "
+                                       "версии ядер_",
+                                       reply_markup=markup,
+                                       parse_mode="Markdown")
+            #  Выводим кнопки и сообщение parse_mode= "Markdown"
         elif call.data == "admins":
             markup = types.InlineKeyboardMarkup()
-            back=types.InlineKeyboardButton(text="🔙", callback_data="helpmenu")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
+            back = types.InlineKeyboardButton(text="🔙",
+                                              callback_data="helpmenu")
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
             markup.add(back, delete)
 
-            bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id,
+            bot.edit_message_text(chat_id=call.message.chat.id,
+                                  message_id=call.message.message_id,
                                   text="📎*Команды для админов*📎"
                                   "\n`/kick` - _Кикнуть пользователя_"
                                   "\n`/pin` - _Закрепить пересланное сообщение_"
