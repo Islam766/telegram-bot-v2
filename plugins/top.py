@@ -142,8 +142,7 @@ def write(m):
         name = m.from_user.first_name
         userid = str(m.from_user.id)
         try:
-            cursor.execute("SELECT message from top_users"
-                           f"where user_id= {userid};")
+            cursor.execute(f"SELECT message FROM top_users WHERE user_id='{userid}';")
             rows = cursor.fetchall()
             result = None
             for row in rows:

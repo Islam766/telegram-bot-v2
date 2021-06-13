@@ -1,3 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
+""" Создание скриншота сайта """
+
 from config import bot, chat_id
 from plugins.error import Error
 import requests
@@ -5,34 +10,37 @@ from bs4 import BeautifulSoup
 import time
 from telebot import types
 from plugins.error import in_chat
+from config import HEADERS
 
-#________________________________________________________________________________________________________________
-#Скриншот сайтов
-#________________________________________________________________________________________________________________
+
 @bot.message_handler(commands=['url'])
 @in_chat()
 def screen(m):
     bot.delete_message(m.chat.id, m.message_id)
-    HEADERS = {"User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36"}
     keyboard = types.InlineKeyboardMarkup()
-    keyboard_delete = types.InlineKeyboardButton(text = "❌", callback_data = "delete")
+    keyboard_delete = types.InlineKeyboardButton(text="❌", 
+                                                 callback_data="delete")
     keyboard.add(keyboard_delete)
 
-    #try:
-    if 1 == 1:
-        #if m.text[:5] != "https" or m.text[:5] != "http":
-        #    bot.send_message(m.chat.id, )
-        res = requests.get(m.text[5:], headers = HEADERS) # Защита от спермотоксикозников
-        bool_ = ("Порн" in res.text or "Porn" in res.text or "porn" in res.text or "порн" in res.text)
-        if bool_ is True:  
-            bot.send_sticker(m.chat.id, "CAACAgQAAxkBAAIaSF93cwIsw1oPRGtOdZHTF8_UsBTDAAJYAAO6erwZr3-jVb-xFsgbBA")
-            time.sleep (15.5)
-            bot.delete_message(m.chat.id, m.message_id + 1)
-        else:
-            photo="https://mini.s-shot.ru/1366x768/JPEG/1366/Z100/?" + m.text[5:]
-            bot.send_photo(m.chat.id, photo, reply_markup = keyboard)
-    #except Exception as e:
-    #    print (photo)
-    #    print ("❌ ОШИБКА ❌")
-    #    print ("screenshot.py  " + e)
-    #    Error(m, bot).error()
+    link = m.text[5:]
+
+    if not link.startswith(("https://", "http://")):
+        link = f"https://{link}"
+
+    html = requests.get(link, headers=HEADERS).text
+
+    # Защита от спермотоксикозников
+    bool_ = ("Порн" in html
+             or "Porn" in html
+             or "porn" in html
+             or "порн" in html)
+
+    if bool_ is True:
+        bot.send_sticker(m.chat.id,
+                         "CAACAgQAAxkBAAIaSF93cwIsw1oPRGtOdZHTF8_UsBTDAAJYAAO"
+                         "6erwZr3-jVb-xFsgbBA")
+        time.sleep(15.5)
+        bot.delete_message(m.chat.id, m.message_id + 1)
+    else:
+        photo = "https://mini.s-shot.ru/1366x768/JPEG/1366/Z100/?" + link
+        bot.send_photo(m.chat.id, photo, reply_markup=keyboard)

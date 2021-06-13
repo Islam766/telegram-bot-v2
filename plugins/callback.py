@@ -535,33 +535,20 @@ def callback_inline(call):
             elif call.data == "dalee_top":
                 cursor = conn.cursor()
                 try:
-                    cursor.execute("SELECT row_number() OVER(ORDER BY message::int DESC), user_id, name, message, new, date_add FROM top_users;")
+                    cursor.execute("SELECT row_number() OVER"
+                                   "(ORDER BY message::int DESC),"
+                                   "user_id, name, message, new FROM top_users"
+                                   )
                     rows = cursor.fetchall()
                     result_list = []
                     del rows[:10]
-                    
+
                     for row in rows[:10]:
-                        beginner = ""
-                        if row[4] == True:
-                            beginner = "[Новичок]"
-                            date = row[5].split()
-
-                            year = int (date[0])     # Год
-                            month = int (date[1])    # Месяц
-                            day = int (date[2])     # День
-
-                            date_new = datetime.date(year, month, day)
-                            date_last = datetime.datetime.now().day - date_new.day
-                            if date_last >= 5:
-                                cursor.execute(f"""UPDATE top_users SET new = FALSE WHERE user_id = {row[1]};""") 
-                                cursor.execute(f"UPDATE top_users SET date_add = '' WHERE user_id = {row[1]};")
-                                conn.commit()
-
                         number = row[0]
                         user_id = row[1]
                         last_name = row[2]
                         message = row[3]
-                        result = f'{number} ✅ {last_name} ✉ = {message}     {beginner}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
+                        result = f'{number} ✅ {last_name} ✉ = {message}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
                         result_list.append(result)
                     results_lists_last = "\n".join(result_list)
                     markup = types.InlineKeyboardMarkup() #Отвечаем, если выхов был из супер чата
