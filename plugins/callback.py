@@ -706,9 +706,7 @@ def callback_inline(call):
                     bot.delete_message(call.message.chat.id, delete.message_id)
 
         elif call.data == "noj":
-            a = ['Камень', 
-                 'Ножницы',
-                 'Бумага']
+            a = ['Камень', 'Ножницы', 'Бумага']
             comp_number = random.choice(a)
             enter_all = f"_Вы выбрали_ *Ножницы*_, а мой выбор_ *{comp_number}*"
             if comp_number == "Ножницы": # Условие для ничьей
