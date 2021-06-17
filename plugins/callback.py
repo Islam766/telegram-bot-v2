@@ -150,7 +150,8 @@ def callback_inline(call):
 
             keyboard_delete_.add(keyboard_delete)
 
-            res = requests.get("https://archlinux.org.ru/news/", headers=HEADERS)
+            res = requests.get("https://archlinux.org.ru/news/",
+                               headers=HEADERS)
             html = bs(res.text, "lxml")
             find = html.find_all("div", {"class": "block"})
 
@@ -300,10 +301,9 @@ def callback_inline(call):
             citata = types.InlineKeyboardButton(text="Цитата🤤",
                                                 callback_data="citata")
 
-            commands_help = types.InlineKeyboardButton("Помощь по команда"
-                                                       "м📄",
-                                                       callback_data="helpmenu"
-                                                       )
+            commands_help = types.InlineKeyboardButton(
+                                                text="Помощь по командам📄",
+                                                callback_data="helpmenu")
 
             delete = types.InlineKeyboardButton(text="❌",
                                                 callback_data="delete")
@@ -556,9 +556,9 @@ def callback_inline(call):
                                   " мой друг*",
                                   reply_markup=markup,
                                   parse_mode="Markdown")
-    #  __________________________________________________________________________
+    #  ________________________________________________________________________
     #  Кнопки для команды /help
-    #  __________________________________________________________________________
+    #  ________________________________________________________________________
         elif call.data == "helpmenu":
             keyboard = types.InlineKeyboardMarkup()  # Добавляем кнопки
             commands_user = types.InlineKeyboardButton("Пользователь🤵",
@@ -647,114 +647,141 @@ def callback_inline(call):
                                   message_id=call.message.message_id,
                                   text="📎*Команды для админов*📎"
                                   "\n`/kick` - _Кикнуть пользователя_"
-                                  "\n`/pin` - _Закрепить пересланное сообщение_"
+                                  "\n`/pin` - _Закрепить пересланное "
+                                  "сообщение_"
                                   "\n`/unpin` - _Открепить сообщение_"
                                   "\n`/mute` - _Дать мут дурачку_"
                                   "\n`/unmute` - _Снять мут_"
-                                  "\n`/link` - _Получить пригласительную ссылку, после каждого запроса ссылка меняется_"
-                                  "\n`/des`  - _Изменить описание чата, если пустая команда, то описание стирается_ "
+                                  "\n`/link` - _Получить пригласительную ссылк"
+                                  "у, после каждого запроса ссылка меняется_"
+                                  "\n`/des`  - _Изменить описание чата, если п"
+                                  "устая команда, то описание стирается_ "
                                   "\n`/logs` - _Просмотр журнала ошибок_"
-                                  "\n`/unban` *ID* или *Пересланное сообщение* - _Убрать пользователя из черного списка_"
-                                  "\n`/restart` - _Перезапустить основного бота_", reply_markup=markup, parse_mode= "Markdown")
-    #________________________________________________________________________________________________________________
-    #Рандомные котейки
-    #________________________________________________________________________________________________________________
+                                  "\n`/unban` *ID* или *Пересланное сообщение*"
+                                  " - _Убрать пользователя из черного списка_"
+                                  "\n`/restart` - _Перезапустить основного "
+                                  "бота_",
+                                  reply_markup=markup,
+                                  parse_mode="Markdown")
+    #  ________________________________________________________________________
+    #  Рандомные котейки
+    #  ________________________________________________________________________
         elif call.data == "cats":
             bot.delete_message(call.message.chat.id, call.message.message_id)
             keyboard = types.InlineKeyboardMarkup()
-            cats = types.InlineKeyboardButton(text="Еще хочу котейку", callback_data="cats")
-            delete = types.InlineKeyboardButton(text="❌", callback_data="delete")
+            cats = types.InlineKeyboardButton(text="Еще хочу котейку",
+                                              callback_data="cats")
+            delete = types.InlineKeyboardButton(text="❌",
+                                                callback_data="delete")
             keyboard.add(cats, delete)
-            user_agent = {
-                            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'
-                        }
 
-            search = "https://theoldreader.com/kittens/1366/768/js" #Запрашиваем у юзера, что он хочет найти
-            url = requests.get(search, headers=user_agent) #Делаем запрос
-            soup = BeautifulSoup(url.text, features="lxml") #Получаем запрос
-            result = soup.find("img").get("src") #Ищем тег <img src="ссылка.png"
+            search = "https://theoldreader.com/kittens/1366/768/js"
+            url = requests.get(search, headers=HEADERS)  # Делаем запрос
+            soup = BeautifulSoup(url.text, features="lxml")  # Получаем запрос
+            result = soup.find("img").get("src")  # Ищем тег <img src="*.png"
             result = "https://theoldreader.com" + result
-            bot.send_photo(chat_id=call.message.chat.id, photo=result, reply_markup=keyboard)
-    #________________________________________________________________________________________________________________
-    #Игра камень ножницы бумага
-    #________________________________________________________________________________________________________________
+            bot.send_photo(chat_id=call.message.chat.id,
+                           photo=result,
+                           reply_markup=keyboard)
+    # _________________________________________________________________________
+    # Игра камень ножницы бумага
+    # _________________________________________________________________________
         elif call.data == "kamen":
             a = ['Камень', 'Ножницы', 'Бумага']
             comp_number = random.choice(a)
             enter_all = f"_Вы выбрали_ *Камень*_, а мой выбор_ *{comp_number}*"
-            if comp_number == "Камень": # Условие для ничьей
+            if comp_number == "Камень":  # Условие для ничьей
+                id_user = call.message.message_id
                 delete = bot.edit_message_text(chat_id=call.message.chat.id,
-                                                message_id=call.message.message_id,
-                                                text=f"{enter_all} \n*Ничья*",
-                                                parse_mode = "Markdown")
+                                               message_id=id_user,
+                                               text=f"{enter_all} \n*Ничья*",
+                                               parse_mode="Markdown")
                 sleep(5)
                 bot.delete_message(call.message.chat.id, delete.message_id)
-            else: # Условие для выигрыша или проигрыша
+            else:  # Условие для выигрыша или проигрыша
                 if comp_number == "Ножницы":
-                    delete = bot.edit_message_text(chat_id=call.message.chat.id, 
-                                                    message_id=call.message.message_id,
-                                                    text=f"{enter_all}\n_Ты победил, камень поломал ножницы!_",
-                                                    parse_mode = "Markdown")
+                    txt = "Ты победил, камень поломал ножницы!"
+                    message_id = call.message.message_id
+                    delete = bot.edit_message_text(
+                                                chat_id=call.message.chat.id,
+                                                message_id=message_id,
+                                                text=f"{enter_all}\n_{txt}_",
+                                                parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
                 elif comp_number == "Бумага":
-                    delete = bot.edit_message_text(chat_id=call.message.chat.id,
-                                                    message_id=call.message.message_id, 
-                                                    text=f"{enter_all}\n_Я победил, бумага закатала камень!_",
-                                                    parse_mode = "Markdown")
+                    txt = "Я победил, бумага закатала камень!"
+                    delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}"
+                                                 "\n_{txt}_",
+                                            parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
 
         elif call.data == "noj":
             a = ['Камень', 'Ножницы', 'Бумага']
             comp_number = random.choice(a)
-            enter_all = f"_Вы выбрали_ *Ножницы*_, а мой выбор_ *{comp_number}*"
-            if comp_number == "Ножницы": # Условие для ничьей
-                delete = bot.edit_message_text(chat_id=call.message.chat.id, 
-                                                message_id=call.message.message_id, 
-                                                text=f"{enter_all}\n*Ничья*",
-                                                parse_mode = "Markdown")
+            enter_all = (f"_Вы выбрали_ *Ножницы*_, "
+                         f"а мой выбор_ *{comp_number}*")
+            if comp_number == "Ножницы":  # Условие для ничьей
+                delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n*Ничья*",
+                                            parse_mode="Markdown")
                 sleep(5)
                 bot.delete_message(call.message.chat.id, delete.message_id)
-            else: # Условие для выигрыша или проигрыша
+            else:  # Условие для выигрыша или проигрыша
                 if comp_number == "Камень":
-                    delete = bot.edit_message_text( chat_id=call.message.chat.id, 
-                                                    message_id=call.message.message_id,
-                                                    text=f"{enter_all}\n_Я победил, так как вы выбрали ножницы._ *Камень* _поломал ножницы!_",
-                                                    parse_mode = "Markdown")
+                    delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n_Я победил, "
+                                                 "так как вы выбрали ножницы._"
+                                                 "*Камень* _поломал ножницы!_",
+                                            parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
                 elif comp_number == "Бумага":
-                    delete = bot.edit_message_text(chat_id=call.message.chat.id, 
-                                                    message_id=call.message.message_id,
-                                                    text=f"{enter_all}\n_Ты победил, ножницы разрезали бумагу!_",
-                                                    parse_mode = "Markdown")
+                    delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n_Ты победил, "
+                                                 "ножницы разрезали бумагу!_",
+                                            parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
         elif call.data == "bumaga":
             a = ['Камень', 'Ножницы', 'Бумага']
             comp_number = random.choice(a)
             enter_all = f"_Вы выбрали_ *Бумага*_, а мой выбор_ *{comp_number}*"
-            if comp_number == "Бумага": # Условие для ничьей
-                delete = bot.edit_message_text( chat_id=call.message.chat.id, 
-                                                message_id=call.message.message_id, 
-                                                text=f"{enter_all}\n*Ничья*",
-                                                parse_mode = "Markdown")
+            if comp_number == "Бумага":  # Условие для ничьей
+                delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n*Ничья*",
+                                            parse_mode="Markdown")
                 sleep(5)
                 bot.delete_message(call.message.chat.id, delete.message_id)
-            else: # Условие для выигрыша или проигрыша
+            else:  # Условие для выигрыша или проигрыша
                 if comp_number == "Камень":
-                    delete = bot.edit_message_text( chat_id=call.message.chat.id,
-                                                    message_id=call.message.message_id, 
-                                                    text=f"{enter_all}\n_Ты победил(a), бумага закатала камень!_",
-                                                    parse_mode = "Markdown")
+                    delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n_Ты победил(a)"
+                                            ", бумага закатала камень!_",
+                                            parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
                 elif comp_number == "Ножницы":
-                    delete = bot.edit_message_text(chat_id=call.message.chat.id,
-                                                    message_id=call.message.message_id, 
-                                                    text=f"{enter_all}\n_Я победил, ножницы разрезали бумагу!_",
-                                                    parse_mode = "Markdown")
+                    delete = bot.edit_message_text(
+                                            chat_id=call.message.chat.id,
+                                            message_id=call.message.message_id,
+                                            text=f"{enter_all}\n_Я победил, "
+                                            "ножницы разрезали бумагу!_",
+                                            parse_mode="Markdown")
                     sleep(5)
                     bot.delete_message(call.message.chat.id, delete.message_id)
         elif call.data == "delete":
@@ -764,7 +791,8 @@ def callback_inline(call):
             os.system("cat /dev/null > plugins/.arch_news_info.pickle")
         elif call.data == "delete_2":
             bot.delete_message(call.message.chat.id, call.message.message_id)
-            bot.delete_message(call.message.chat.id, call.message.message_id - 1)
+            bot.delete_message(call.message.chat.id,
+                               call.message.message_id - 1)
         elif call.data == "dalee_top":
             cursor = conn.cursor()
             try:
@@ -778,106 +806,161 @@ def callback_inline(call):
 
                 for row in rows[:10]:
                     number = row[0]
-                    user_id = row[1]
                     last_name = row[2]
                     message = row[3]
-                    result = f'{number} ✅ {last_name} ✉ = {message}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
+                    result = (f'{number} ✅ {last_name} ✉ = {message}'
+                              '\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖')
                     result_list.append(result)
                 results_lists_last = "\n".join(result_list)
-                markup = types.InlineKeyboardMarkup() #Отвечаем, если выхов был из супер чата
-                back_top = types.InlineKeyboardButton(text='🔙', callback_data="back_top") #Отвечаем, если выхов был из супер чата
-                dalee_top_one = types.InlineKeyboardButton(text='🔜', callback_data="dalee_top_one")
-                delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
-                markup.add(back_top, dalee_top_one)
-                markup.add(delete) #Отвечаем, если выхов был из супер чата
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = f"📎Активность пользователей в чате📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n{results_lists_last}", reply_markup = markup)
-            except Exception as e:
-                print (e)
                 markup = types.InlineKeyboardMarkup()
-                dalee_top = types.InlineKeyboardButton(text='🔙', callback_data="dalee_top")
-                delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
+                back_top = types.InlineKeyboardButton(text='🔙',
+                                                      callback_data="back_top")
+                dalee_top_one = types.InlineKeyboardButton(
+                                                text='🔜',
+                                                callback_data="dalee_top_one")
+                delete = types.InlineKeyboardButton(text="❌",
+                                                    callback_data="delete_2")
+                markup.add(back_top, dalee_top_one)
+                markup.add(delete)  # Отвечаем, если выхов был из супер чата
+                bot.edit_message_text(chat_id=call.message.chat.id,
+                                      message_id=call.message.message_id,
+                                      text="📎Активность пользователей в ч"
+                                      "ате📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖"
+                                      f"➖\n{results_lists_last}",
+                                      reply_markup=markup)
+            except Exception as e:
+                print(e)
+                markup = types.InlineKeyboardMarkup()
+                dalee_top = types.InlineKeyboardButton(
+                                                    text='🔙',
+                                                    callback_data="dalee_top")
+                delete = types.InlineKeyboardButton(text="❌",
+                                                    callback_data="delete_2")
                 markup.add(dalee_top, delete)
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = "Таблица пустая, нечего выводить", reply_markup = markup)
+                bot.edit_message_text(chat_id=call.message.chat.id,
+                                      message_id=call.message.message_id,
+                                      text="Таблица пустая, нечего выводить",
+                                      reply_markup=markup)
         elif call.data == "back_top":
             cursor = conn.cursor()
             try:
-                cursor.execute("SELECT row_number() OVER(ORDER BY message::int DESC), user_id, name, message, new, date_add FROM top_users;")
+                cursor.execute("SELECT row_number() OVER(ORDER BY message::"
+                               "int DESC), user_id, name, message, new, "
+                               "date_add FROM top_users;")
                 rows = cursor.fetchall()
-                result_list =[]
+                result_list = []
 
                 for row in rows[:10]:
                     beginner = ""
-                    if row[4] == True:
+                    if row[4] is True:
                         beginner = "[Новичок]"
                         date = row[5].split()
 
-                        year = int (date[0])     # Год
-                        month = int (date[1])    # Месяц
-                        day = int (date[2])     # День
+                        year = int(date[0])     # Год
+                        month = int(date[1])    # Месяц
+                        day = int(date[2])     # День
 
                         date_new = datetime.date(year, month, day)
                         date_last = datetime.datetime.now().day - date_new.day
                         if date_last >= 5:
-                            cursor.execute(f"""UPDATE top_users SET new = FALSE WHERE user_id = {row[1]};""") 
-                            cursor.execute(f"UPDATE top_users SET date_add = '' WHERE user_id = {row[1]};")
+                            cursor.execute("UPDATE top_users SET new = "
+                                           f"FALSE WHERE user_id = {row[1]};")
+                            cursor.execute("UPDATE top_users "
+                                           "SET date_add = ''"
+                                           "WHERE user_id = {row[1]};")
                             conn.commit()
 
                     number = row[0]
-                    user_id = row[1]
                     last_name = row[2]
                     message = row[3]
-                    result = f'{number} ✅ {last_name} ✉ = {message}     {beginner}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
+                    result = (f'{number} ✅ {last_name} ✉ = {message}     '
+                              f'{beginner}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
+                              )
                     result_list.append(result)
 
                 results_lists_last = "\n".join(result_list)
-                markup = types.InlineKeyboardMarkup() #Отвечаем, если выхов был из супер чата
-                dalee_top = types.InlineKeyboardButton(text='🔜', callback_data="dalee_top") #Отвечаем, если выхов был из супер чат
-                delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
-                markup.add(dalee_top, delete) #Отвечаем, если выхов был из супер чата
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = f"📎Активность пользователей в чате📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n{results_lists_last}", reply_markup = markup)
+                markup = types.InlineKeyboardMarkup()
+                dalee_top = types.InlineKeyboardButton(
+                                                    text='🔜',
+                                                    callback_data="dalee_top")
+                delete = types.InlineKeyboardButton(text="❌",
+                                                    callback_data="delete_2")
+                markup.add(dalee_top, delete)
+                bot.edit_message_text(
+                    chat_id=call.message.chat.id,
+                    message_id=call.message.message_id,
+                    text="📎Активность пользователей в чате"
+                    "📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖"
+                    f"➖➖\n{results_lists_last}",
+                    reply_markup=markup)
             except Exception as e:
-                print (e)
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = "Таблица пустая, нечего выводить")
+                print(e)
+                bot.edit_message_text(chat_id=call.message.chat.id,
+                                      message_id=call.message.message_id,
+                                      text="Таблица пустая, нечего выводить")
         elif call.data == "dalee_top_one":
             cursor = conn.cursor()
             try:
-                cursor.execute("SELECT row_number() OVER(ORDER BY message::int DESC), user_id, name, message, new, date_add FROM top_users;")
+                cursor.execute("SELECT row_number()"
+                               "OVER(ORDER BY message::int DESC)"
+                               ", user_id, name, message, new, date_add"
+                               "FROM top_users;")
                 rows = cursor.fetchall()
-                result_list =[]
+                result_list = []
 
                 beginner = ""
                 for row in rows[20:30]:
-                    if row[4] == True:
+                    if row[4] is True:
                         beginner = "[Новичок]"
                         date = row[5].split()
 
-                        year = int (date[0])     # Год
-                        month = int (date[1])    # Месяц
-                        day = int (date[2])     # День
+                        year = int(date[0])     # Год
+                        month = int(date[1])    # Месяц
+                        day = int(date[2])     # День
 
                         date_new = datetime.date(year, month, day)
                         date_last = datetime.datetime.now().day - date_new.day
                         if date_last >= 5:
-                            cursor.execute(f"""UPDATE top_users SET new = FALSE WHERE user_id = {row[1]};""") 
-                            cursor.execute(f"UPDATE top_users SET date_add = '' WHERE user_id = {row[1]};")
+                            cursor.execute("UPDATE top_users SET new = FALSE"
+                                           f"WHERE user_id = {row[1]};")
+                            cursor.execute("UPDATE top_users"
+                                           "SET date_add = ''"
+                                           f"WHERE user_id = {row[1]};")
                             conn.commit()
                     number = row[0]
-                    user_id = row[1]
                     last_name = row[2]
                     message = row[3]
-                    result = f'{number} ✅ {last_name} ✉ = {message}    {beginner}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
+                    result = f'{number} ✅ {last_name} ✉ = '
+                    '{message}    {beginner}\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖'
                     result_list.append(result)
                 results_lists_last = "\n".join(result_list)
 
-                markup = types.InlineKeyboardMarkup() #Отвечаем, если выхов был из супер чата
-                dalee_top = types.InlineKeyboardButton(text='🔙', callback_data="dalee_top") #Отвечаем, если выхов был из супер чата
-                delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
-                markup.add(dalee_top, delete) #Отвечаем, если выхов был из супер чата
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = f"📎Активность пользователей в чате📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖\n{results_lists_last}", reply_markup = markup)
-            except Exception as e:
-                print (e)
                 markup = types.InlineKeyboardMarkup()
-                dalee_top = types.InlineKeyboardButton(text='🔙', callback_data="dalee_top")
-                delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
+                dalee_top = types.InlineKeyboardButton(
+                                                    text='🔙',
+                                                    callback_data="dalee_top")
+
+                delete = types.InlineKeyboardButton(text="❌",
+                                                    callback_data="delete_2")
                 markup.add(dalee_top, delete)
-                bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text = "Таблица пустая, нечего выводить", reply_markup = markup)
+                bot.edit_message_text(
+                    chat_id=call.message.chat.id,
+                    message_id=call.message.message_id,
+                    text="📎Активность пользователей в чате"
+                    "📎\n➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖"
+                    f"➖\n{results_lists_last}",
+                    reply_markup=markup)
+            except Exception as e:
+                print(e)
+                markup = types.InlineKeyboardMarkup()
+                dalee_top = types.InlineKeyboardButton(
+                                                    text='🔙',
+                                                    callback_data="dalee_top")
+                delete = types.InlineKeyboardButton(
+                                                text="❌",
+                                                callback_data="delete_2")
+                markup.add(dalee_top, delete)
+                bot.edit_message_text(chat_id=call.message.chat.id,
+                                      message_id=call.message.message_id,
+                                      text="Таблица пустая, нечего выводить",
+                                      reply_markup=markup)

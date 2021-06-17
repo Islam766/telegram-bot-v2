@@ -1,18 +1,18 @@
 #!/usr/bin/python
+# -*- coding: utf8 -*-
 
 from config import chat_id
 from config import token
 import requests
-import json
 from collections import namedtuple
 
-############################################################################################
-# Получение прав юзера
-def getChatMember(id_, token = token):
+
+def getChatMember(id_, token=token) -> tuple:
+    """ Получение прав юзера """
 
     url = f'https://api.telegram.org/bot{token}/getChatMember'
     payload = {
-        
+
         "chat_id": str(chat_id),
         "user_id": str(id_)
     }
@@ -30,7 +30,13 @@ def getChatMember(id_, token = token):
         can_pin_messages = False
 
     if response['status'] == 'restricted':
-        for line in ['can_send_messages', 'can_send_media_messages','can_send_polls', 'can_send_other_messages', "can_change_info", 'can_invite_users', 'can_pin_messages']:
+        for line in ['can_send_messages',
+                     'can_send_media_messages',
+                     'can_send_polls',
+                     'can_send_other_messages',
+                     "can_change_info",
+                     'can_invite_users',
+                     'can_pin_messages']:
             if response[line]:
                 bool_ = True
                 if line == 'can_send_messages':
@@ -63,6 +69,15 @@ def getChatMember(id_, token = token):
                     can_pin_messages = bool_
                 if line == "can_change_info":
                     can_change_info = bool_
-    rules = namedtuple("Permission", "can_send_messages can_send_media_messages can_send_polls can_send_other_messages can_invite_users can_pin_messages can_change_info")
-    user_rules = rules(can_send_messages, can_send_media_messages, can_send_polls, can_send_other_messages, can_invite_users = False, can_pin_messages = False, can_change_info = False)
+    rules = namedtuple("Permission",
+                       "can_send_messages can_send_media_messages "
+                       "can_send_polls can_send_other_messages "
+                       "can_invite_users can_pin_messages can_change_info")
+    user_rules = rules(can_send_messages,
+                       can_send_media_messages,
+                       can_send_polls,
+                       can_send_other_messages,
+                       can_invite_users=False,
+                       can_pin_messages=False,
+                       can_change_info=False)
     return user_rules

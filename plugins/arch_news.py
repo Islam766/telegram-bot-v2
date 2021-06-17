@@ -74,14 +74,15 @@ def send_callback_news(call, num):
 @in_chat()
 def arch__news(m):
     keyboard = types.InlineKeyboardMarkup()
-    keyboard_delete = types.InlineKeyboardButton(text="❌", 
+    keyboard_delete = types.InlineKeyboardButton(text="❌",
                                                  callback_data="delete")
     keyboard.add(keyboard_delete)
 
     bot.delete_message(m.chat.id, m.message_id)
     res = requests.get("https://archlinux.org.ru/news/", headers=HEADERS)
     html = bs(res.text, "lxml")
-    find = html.find_all("div", {"class": "block"})
+    find = html.find_all("div",
+                         {"class": "block"})
 
     titles = []
     links = []
@@ -104,19 +105,19 @@ def arch__news(m):
     titles = titles[3:]
 
     keyboard = types.InlineKeyboardMarkup()
-    keyboard_delete = types.InlineKeyboardButton(text="❌", 
+    keyboard_delete = types.InlineKeyboardButton(text="❌",
                                                  callback_data="delete")
 
-    keyboard_one = types.InlineKeyboardButton(text="1⃣", 
+    keyboard_one = types.InlineKeyboardButton(text="1⃣",
                                               callback_data="b_zero")
 
     keyboard_two = types.InlineKeyboardButton(text="2⃣",
                                               callback_data="b_one")
 
-    keyboard_tree = types.InlineKeyboardButton(text="3⃣", 
+    keyboard_tree = types.InlineKeyboardButton(text="3⃣",
                                                callback_data="b_two")
 
-    keyboard_next = types.InlineKeyboardButton(text="🔜", 
+    keyboard_next = types.InlineKeyboardButton(text="🔜",
                                                callback_data="next")
 
     keyboard.add(keyboard_one,
