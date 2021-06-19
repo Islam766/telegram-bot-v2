@@ -1,5 +1,8 @@
 #!/usr/bin/python
-from datetime import datetime, date, time
+# -*- coding: utf8 -*-
+
+from datetime import datetime
+
 
 class logfile:
 
@@ -13,7 +16,7 @@ class logfile:
 			first_name = int (self.call.from_user.first_name)
 			id_ = int(self.call.from_user.id)
 		except Exception:
-			id_ = self.call.chat.id 
+			id_ = self.call.chat.id
 			first_name = self.call.from_user.first_name
 
 		date = datetime.now()

@@ -18,7 +18,7 @@ from config import HEADERS
 def screen(m):
     bot.delete_message(m.chat.id, m.message_id)
     keyboard = types.InlineKeyboardMarkup()
-    keyboard_delete = types.InlineKeyboardButton(text="❌", 
+    keyboard_delete = types.InlineKeyboardButton(text="❌",
                                                  callback_data="delete")
     keyboard.add(keyboard_delete)
 
