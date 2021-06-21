@@ -68,3 +68,5 @@ def crocodile_win(m):
                      text=f"*{m.from_user.first_name}* _угадал(a) слово_!",
                      reply_markup=markup,
                      parse_mode="Markdown")
+
+crocodile.__annotations__['word_txt'] = "$%^&*None*&^%$#"

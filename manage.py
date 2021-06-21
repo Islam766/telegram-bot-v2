@@ -45,7 +45,7 @@ try:
                 if (m.from_user.id in id_s) is False:
                     bot.delete_message(m.chat.id, m.message_id)
 
-                    bot.send_message(m.chat.id, 
+                    bot.send_message(m.chat.id,
                         """
                         *Данная команда доступна:*
                         \n 1. Opelsin
@@ -60,7 +60,7 @@ try:
                         app.restart()
                         bot.send_message(905933085,
                                          "*Все боты будут перезапущены через 5"
-                                         "секунд!*", 
+                                         "секунд!*",
                                          parse_mode="Markdown")
                     except:
                         Error(m, bot).error()

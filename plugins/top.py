@@ -1,18 +1,19 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+
 from config import bot, conn, user_id, chat_id
-import psycopg2
 from telebot import types
-import matplotlib.pyplot as plt 
-import warnings 
-import os
+import matplotlib.pyplot as plt
+import warnings
 from psycopg2.errors import InFailedSqlTransaction
-import datetime
-from plugins.error import Error
 from plugins.error import in_chat
 import sys
 from psycopg2.errors import InFailedSqlTransaction
 from psycopg2.errors import UndefinedColumn
 
-sys.setrecursionlimit(5000) 
+sys.setrecursionlimit(5000)
+
+
 def deletedb(m):
     if int(m.from_user.id) == int(user_id):
         cursor = conn.cursor()
@@ -26,10 +27,11 @@ def deletedb(m):
     else:
         bot.send_message(m.chat.id, "Вас нет в списке!")
 
+
 def createdb(m):
     if int(m.from_user.id) == int(user_id):
         cursor = conn.cursor()
-        bot.send_message(m.chat.id, "Удачный вход в базу данных") 
+        bot.send_message(m.chat.id, "Удачный вход в базу данных")
         try:
             cursor.execute('''CREATE TABLE top_users
                     (user_id INT PRIMARY KEY,
@@ -64,7 +66,7 @@ def top(m):
 
     try:
         markup = types.InlineKeyboardMarkup()  # выход был из супер чата
-        dalee_top = types.InlineKeyboardButton(text='🔜', 
+        dalee_top = types.InlineKeyboardButton(text='🔜',
                                                callback_data="dalee_top")
         # Отвечаем, если выхов был из супер чата
         delete = types.InlineKeyboardButton(text="❌", callback_data="delete_2")
@@ -75,7 +77,7 @@ def top(m):
         names_list = []
 
         for line in info[:-10]:
-            # Берем имена и сообщения,кроме последних 10.  
+            # Берем имена и сообщения,кроме последних 10.
             # Если их не убрать то надписи будут налазить
             # друг на друга
             names_list.append(line[2])
@@ -90,7 +92,7 @@ def top(m):
         labels = names_list
         sizes = messages_list
 
-        labels.append("Другие")      
+        labels.append("Другие")
         sizes.append(end_messages)
 
         with warnings.catch_warnings():
@@ -115,6 +117,7 @@ def top(m):
     except InFailedSqlTransaction:
         bot.send_message(m.chat.id, "Таблица пустая, нечего выводить")
 
+
 def writes(m):
     """ Добавление юзера в таблицу """
     if int(m.chat.id) == int(chat_id):
@@ -134,6 +137,7 @@ def writes(m):
             conn.rollback()
             write(m)
 
+
 def write(m):
     """ Изменение значение в таблице """
     if not m.reply_to_message:
@@ -142,7 +146,8 @@ def write(m):
         name = m.from_user.first_name
         userid = str(m.from_user.id)
         try:
-            cursor.execute(f"SELECT message FROM top_users WHERE user_id='{userid}';")
+            cursor.execute("SELECT message FROM top_users"
+                           f" WHERE user_id='{userid}';")
             rows = cursor.fetchall()
             result = None
             for row in rows:

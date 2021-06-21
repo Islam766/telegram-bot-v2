@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
 
-from telebot import ApiTelegramException
+from telebot.apihelper import ApiTelegramException
 from config import bot
 from time import sleep
 from plugins.error import (in_chat,
