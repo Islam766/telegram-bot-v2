@@ -25,8 +25,8 @@ def handler_new_member(m):
     #######################################################
     writes(m)
     cursor = conn.cursor()
-    cursor.execute("UPDATE top_users SET date_add = '{date}'"
-                   "WHERE user_id = {m.from_user.id};")
+    cursor.execute(f"UPDATE top_users SET date_add = '{date}'"
+                   f"WHERE user_id = {m.from_user.id};")
     conn.commit()
     ########################################################
 

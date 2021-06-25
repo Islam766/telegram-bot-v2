@@ -41,7 +41,7 @@ def link(m):
     bot.delete_message(m.chat.id, m.message_id)
     try:
         count = bot.export_chat_invite_link(chat_id)
-        bot.send_message(m.from_user.id, count)
+        bot.send_message(m.from_user.id, f"`{count}`", parse_mode="Markdown")
     except:
         bot.send_message(
             chat_id,
